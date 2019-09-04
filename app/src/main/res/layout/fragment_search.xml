@@ -18,14 +18,12 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="32dp">
+            android:padding="32dp">
 
             <TextView
                 android:id="@+id/textViewFrom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="32dp"
                 android:text="From"
                 android:textAllCaps="true"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -36,17 +34,15 @@
                 android:id="@+id/editTextFrom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
                 android:autofillHints="Source City"
                 android:background="@android:color/transparent"
                 android:ems="10"
                 android:hint="SOURCE"
-                android:inputType="textCapCharacters"
+                android:inputType="textCapCharacters|textNoSuggestions"
                 android:maxLength="3"
-                android:text=""
+                android:text="MEL"
                 android:textAllCaps="true"
                 android:textSize="24sp"
-                android:textColor="@color/colorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewFrom"
@@ -66,7 +62,6 @@
                 android:id="@+id/textViewTo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
                 android:layout_marginTop="32dp"
                 android:text="To"
                 android:textAllCaps="true"
@@ -78,14 +73,13 @@
                 android:id="@+id/editTextTo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
                 android:autofillHints="Destination"
                 android:background="@android:color/transparent"
                 android:ems="10"
                 android:hint="DESTINATION"
-                android:inputType="textCapCharacters"
+                android:inputType="textCapCharacters|textNoSuggestions"
                 android:maxLength="3"
-                android:text=""
+                android:text="SYD"
                 android:textAllCaps="true"
                 android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -107,6 +101,7 @@
                 android:id="@+id/cl_departure"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/cl_return"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -114,25 +109,25 @@
 
                 <TextView
                     android:id="@+id/tv_departure"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
                     android:layout_marginTop="32dp"
                     android:text="Departure"
                     android:textAllCaps="true"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_departureDate"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_departure">
 
                     <TextView
-                        android:id="@+id/tv_dateDeparture"
+                        android:id="@+id/tv_dayDeparture"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@android:color/black"
@@ -142,32 +137,40 @@
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="04" />
 
-                    <TextView
-                        android:id="@+id/tv_monthYearDeparture"
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        app:layout_constraintBottom_toTopOf="@+id/tv_dayDeparture"
-                        app:layout_constraintStart_toEndOf="@id/tv_dateDeparture"
-                        app:layout_constraintTop_toTopOf="@+id/tv_dateDeparture"
-                        tools:text="Sep 2019" />
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/tv_dayDeparture"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
-                        android:id="@+id/tv_dayDeparture"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginBottom="8dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/tv_dateDeparture"
-                        app:layout_constraintStart_toEndOf="@id/tv_dateDeparture"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_monthYearDeparture"
-                        tools:text="Wednesday" />
+                        <TextView
+                            android:id="@+id/tv_monthYearDeparture"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toTopOf="@+id/tv_dayNameDeparture"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="Sep 2019" />
+
+                        <TextView
+                            android:id="@+id/tv_dayNameDeparture"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:textSize="12sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_monthYearDeparture"
+                            tools:text="Wednesday" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_return"
@@ -180,16 +183,18 @@
 
                 <TextView
                     android:id="@+id/tv_return"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="32dp"
                     android:text="Return"
                     android:textAllCaps="true"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_returnDate"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -198,38 +203,47 @@
                     app:layout_constraintTop_toBottomOf="@+id/tv_return">
 
                     <TextView
-                        android:id="@+id/tv_dateReturn"
+                        android:id="@+id/tv_dayReturn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@android:color/black"
                         android:textSize="40sp"
                         android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="17" />
 
-                    <TextView
-                        android:id="@+id/tv_monthYearReturn"
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        app:layout_constraintBottom_toTopOf="@+id/tv_dayReturn"
-                        app:layout_constraintStart_toEndOf="@id/tv_dateReturn"
-                        app:layout_constraintTop_toTopOf="@+id/tv_dateReturn"
-                        tools:text="Oct 2019" />
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/tv_dayReturn"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
-                        android:id="@+id/tv_dayReturn"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginBottom="8dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/tv_dateReturn"
-                        app:layout_constraintStart_toEndOf="@id/tv_dateReturn"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_monthYearReturn"
-                        tools:text="Wednesday" />
+                        <TextView
+                            android:id="@+id/tv_monthYearReturn"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toTopOf="@+id/tv_dayNameReturn"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            tools:text="Oct 2019" />
 
+                        <TextView
+                            android:id="@+id/tv_dayNameReturn"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:textSize="12sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_monthYearReturn"
+                            tools:text="Wednesday" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
