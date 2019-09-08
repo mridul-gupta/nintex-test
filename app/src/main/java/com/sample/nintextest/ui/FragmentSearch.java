@@ -13,7 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +25,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.sample.nintextest.R;
 import com.sample.nintextest.ViewModelFactory;
+import com.sample.nintextest.utils.Utils.Status;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -45,6 +48,7 @@ public class FragmentSearch extends Fragment {
     private TextView textMonthYearReturn;
     private TextView textDayNameReturn;
     private Button buttonSearch;
+    private ProgressBar progressBar;
 
     private DatePickerDialog.OnDateSetListener mOnDepartureDateSetListener;
     private DatePickerDialog.OnDateSetListener mOnReturnDateSetListener;
@@ -81,6 +85,9 @@ public class FragmentSearch extends Fragment {
         textMonthYearReturn = getView().findViewById(R.id.tv_monthYearReturn);
         textDayNameReturn = getView().findViewById(R.id.tv_dayNameReturn);
         buttonSearch = getView().findViewById(R.id.bt_search);
+        progressBar = getView().findViewById(R.id.progress_circular);
+
+        mViewModel.responseStatus.observe(this, this::consumeResponse);
 
         editTextFrom.addTextChangedListener(new TextWatcher() {
             @Override
@@ -141,17 +148,14 @@ public class FragmentSearch extends Fragment {
         returnYear = year;
         returnDate = new Date(returnYear, returnMonth, returnDay);
 
-        layoutDepartureDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatePickerDialog mDatePickerDialog = new DatePickerDialog(
-                        requireActivity(),
-                        mOnDepartureDateSetListener,
-                        departureYear,
-                        departureMonth,
-                        departureDay);
-                mDatePickerDialog.show();
-            }
+        layoutDepartureDate.setOnClickListener(v -> {
+            DatePickerDialog mDatePickerDialog = new DatePickerDialog(
+                    requireActivity(),
+                    mOnDepartureDateSetListener,
+                    departureYear,
+                    departureMonth,
+                    departureDay);
+            mDatePickerDialog.show();
         });
 
         layoutReturnDate.setOnClickListener(v -> {
@@ -258,5 +262,28 @@ public class FragmentSearch extends Fragment {
             }
         }
         return true;
+    }
+
+    private void consumeResponse(Status status) {
+
+        switch (status) {
+
+            case LOADING:
+                progressBar.setVisibility(View.VISIBLE);
+                break;
+
+            case SUCCESS:
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(requireContext(), "Success fetching API", Toast.LENGTH_SHORT).show();
+                break;
+
+            case ERROR:
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(requireContext(), "Error fetching API", Toast.LENGTH_SHORT).show();
+                break;
+
+            default:
+                break;
+        }
     }
 }
