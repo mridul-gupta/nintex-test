@@ -16,7 +16,7 @@ public class Flight {
     private String inboundFlightsDuration;
 
     @SerializedName("ItineraryId")
-    private int itineraryId;
+    private transient int itineraryId;
 
     @SerializedName("OutboundFlightsDuration")
     private String outboundFlightsDuration;

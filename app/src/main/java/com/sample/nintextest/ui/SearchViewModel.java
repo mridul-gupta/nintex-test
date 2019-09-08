@@ -41,8 +41,9 @@ public class SearchViewModel extends ViewModel {
             }
 
             @Override
-            public void onSuccess(List<Flight> data) {
-
+            public void onSuccess(List<Flight> flights) {
+                mFlightlist.clear();
+                mFlightlist.addAll(flights);
             }
         });
 
