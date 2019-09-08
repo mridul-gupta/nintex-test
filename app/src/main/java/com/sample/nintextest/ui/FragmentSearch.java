@@ -270,15 +270,18 @@ public class FragmentSearch extends Fragment {
 
             case LOADING:
                 progressBar.setVisibility(View.VISIBLE);
+                buttonSearch.setEnabled(false);
                 break;
 
             case SUCCESS:
                 progressBar.setVisibility(View.GONE);
+                buttonSearch.setEnabled(true);
                 Toast.makeText(requireContext(), "Success fetching API", Toast.LENGTH_SHORT).show();
                 break;
 
             case ERROR:
                 progressBar.setVisibility(View.GONE);
+                buttonSearch.setEnabled(true);
                 Toast.makeText(requireContext(), "Error fetching API", Toast.LENGTH_SHORT).show();
                 break;
 
