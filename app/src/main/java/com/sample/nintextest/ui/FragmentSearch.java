@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -155,54 +154,42 @@ public class FragmentSearch extends Fragment {
             }
         });
 
-        layoutReturnDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatePickerDialog mDatePickerDialog = new DatePickerDialog(
-                        requireActivity(),
-                        mOnReturnDateSetListener,
-                        returnYear,
-                        returnMonth,
-                        returnDay);
-                mDatePickerDialog.show();
-            }
+        layoutReturnDate.setOnClickListener(v -> {
+            DatePickerDialog mDatePickerDialog = new DatePickerDialog(
+                    requireActivity(),
+                    mOnReturnDateSetListener,
+                    returnYear,
+                    returnMonth,
+                    returnDay);
+            mDatePickerDialog.show();
         });
 
-        mOnDepartureDateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                departureDay = day;
-                departureMonth = month;
-                departureYear = year;
-                departureDate = new Date(departureYear, departureMonth, departureDay);
+        mOnDepartureDateSetListener = (datePicker, year12, month12, day12) -> {
+            departureDay = day12;
+            departureMonth = month12;
+            departureYear = year12;
+            departureDate = new Date(departureYear, departureMonth, departureDay);
 
-                updateUi();
-            }
+            updateUi();
         };
 
-        mOnReturnDateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                returnDay = day;
-                returnMonth = month;
-                returnYear = year;
-                returnDate = new Date(returnYear, returnMonth, returnDay);
+        mOnReturnDateSetListener = (datePicker, year1, month1, day1) -> {
+            returnDay = day1;
+            returnMonth = month1;
+            returnYear = year1;
+            returnDate = new Date(returnYear, returnMonth, returnDay);
 
-                updateUi();
-            }
+            updateUi();
         };
 
-        buttonSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (validateFields()) {
-                    mViewModel.getFlights(editTextFrom.getText().toString(),
-                            editTextTo.getText().toString(),
-                            departureDate.toString(),
-                            returnDate.toString());
-                } else {
-                    Log.d(TAG, "Field validation failed.");
-                }
+        buttonSearch.setOnClickListener(v -> {
+            if (validateFields()) {
+                mViewModel.getFlights(editTextFrom.getText().toString(),
+                        editTextTo.getText().toString(),
+                        departureDate.toString(),
+                        returnDate.toString());
+            } else {
+                Log.d(TAG, "Field validation failed.");
             }
         });
 
