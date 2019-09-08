@@ -1,10 +1,12 @@
-package com.sample.nintextest;
+package com.sample.nintextest.ui;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.sample.nintextest.R;
 
 public class MainActivity extends FragmentActivity {
 

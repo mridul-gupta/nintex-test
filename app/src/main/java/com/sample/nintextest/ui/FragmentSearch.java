@@ -1,11 +1,13 @@
-package com.sample.nintextest;
+package com.sample.nintextest.ui;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +19,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProviders;
+
+import com.sample.nintextest.R;
+import com.sample.nintextest.ViewModelFactory;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+
 public class FragmentSearch extends Fragment {
+    private final String TAG = "FragmentSearch";
+    private SearchViewModel mViewModel;
+
     private EditText editTextFrom;
     private EditText editTextTo;
     private View layoutDepartureDate;
@@ -164,6 +175,8 @@ public class FragmentSearch extends Fragment {
                 departureMonth = month;
                 departureYear = year;
                 departureDate = new Date(departureYear, departureMonth, departureDay);
+
+                updateUi();
             }
         };
 
@@ -174,6 +187,8 @@ public class FragmentSearch extends Fragment {
                 returnMonth = month;
                 returnYear = year;
                 returnDate = new Date(returnYear, returnMonth, returnDay);
+
+                updateUi();
             }
         };
 
@@ -181,14 +196,28 @@ public class FragmentSearch extends Fragment {
             @Override
             public void onClick(View view) {
                 if (validateFields()) {
-
+                    mViewModel.getFlights(editTextFrom.getText().toString(),
+                            editTextTo.getText().toString(),
+                            departureDate.toString(),
+                            returnDate.toString());
                 } else {
-
+                    Log.d(TAG, "Field validation failed.");
                 }
             }
         });
 
         updateUi();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        initViewModels(requireActivity()); //Obtain ViewModel for Fragment
+    }
+
+    private void initViewModels(FragmentActivity activity) {
+        final ViewModelFactory factory = ViewModelFactory.getInstance(activity.getApplication());
+        mViewModel = ViewModelProviders.of(activity, factory).get(SearchViewModel.class);
     }
 
     private void updateUi() {
