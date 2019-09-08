@@ -25,6 +25,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.sample.nintextest.R;
 import com.sample.nintextest.ViewModelFactory;
+import com.sample.nintextest.utils.Utils;
 import com.sample.nintextest.utils.Utils.Status;
 
 import java.text.SimpleDateFormat;
@@ -33,8 +34,8 @@ import java.util.Date;
 import java.util.Locale;
 
 
-public class FragmentSearch extends Fragment {
-    private final String TAG = "FragmentSearch";
+public class SearchFragment extends Fragment {
+    private final String TAG = "SearchFragment";
     private SearchViewModel mViewModel;
 
     private EditText editTextFrom;
@@ -277,6 +278,7 @@ public class FragmentSearch extends Fragment {
                 progressBar.setVisibility(View.GONE);
                 buttonSearch.setEnabled(true);
                 Toast.makeText(requireContext(), "Success fetching API", Toast.LENGTH_SHORT).show();
+                ((MainActivity)requireActivity()).loadFragment(Utils.FLIGHT_RESULT_SCREEN);
                 break;
 
             case ERROR:
