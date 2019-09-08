@@ -35,7 +35,7 @@ import java.util.Locale;
 
 
 public class SearchFragment extends Fragment {
-    private final String TAG = "SearchFragment";
+    private final String TAG = SearchFragment.class.getSimpleName();
     private SearchViewModel mViewModel;
 
     private EditText editTextFrom;

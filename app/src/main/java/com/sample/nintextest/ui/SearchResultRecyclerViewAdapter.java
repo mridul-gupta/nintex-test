@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sample.nintextest.R;
 import com.sample.nintextest.model.Flight;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class SearchResultRecyclerViewAdapter extends RecyclerView.Adapter<SearchResultRecyclerViewAdapter.SearchResultViewHolder> {
+    private final String TAG = SearchFragment.class.getSimpleName();
 
     private List<Flight> flightList;
     private Context context;
@@ -42,11 +44,22 @@ public class SearchResultRecyclerViewAdapter extends RecyclerView.Adapter<Search
         Locale locale = context.getResources().getConfiguration().getLocales().get(0);
 
         Picasso.Builder builder = new Picasso.Builder(context);
+        Picasso.get().setLoggingEnabled(true);
+        Picasso.get().setIndicatorsEnabled(true);
         builder.downloader(new OkHttp3Downloader(context));
         builder.build().load(flightList.get(position).getAirlineLogoAddress())
                 .placeholder((R.drawable.ic_launcher_background))
                 .error(R.drawable.ic_launcher_background)
-                .into(holder.airlineLogo);
+                .into(holder.airlineLogo, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        Log.e(TAG, "Error fetching image " + position);
+                    }
+                });
 
         holder.airlineName.setText(flightList.get(position).getAirlineName());
         holder.outDuration.setText(flightList.get(position).getAirlineName());
