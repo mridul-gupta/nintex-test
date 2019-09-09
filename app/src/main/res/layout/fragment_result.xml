@@ -22,7 +22,6 @@
             android:id="@+id/rv_flights"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingBottom="32dp"
             app:adapter_items="@{viewmodel.mFlightlist}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"

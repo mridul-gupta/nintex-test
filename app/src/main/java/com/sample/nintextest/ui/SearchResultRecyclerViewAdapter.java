@@ -48,7 +48,6 @@ public class SearchResultRecyclerViewAdapter extends RecyclerView.Adapter<Search
         Picasso.get().setIndicatorsEnabled(true);
         builder.downloader(new OkHttp3Downloader(context));
         builder.build().load(flightList.get(position).getAirlineLogoAddress())
-                .placeholder((R.drawable.ic_launcher_background))
                 .error(R.drawable.ic_launcher_background)
                 .into(holder.airlineLogo, new Callback() {
                     @Override
@@ -62,9 +61,11 @@ public class SearchResultRecyclerViewAdapter extends RecyclerView.Adapter<Search
                 });
 
         holder.airlineName.setText(flightList.get(position).getAirlineName());
-        holder.outDuration.setText(flightList.get(position).getAirlineName());
-        holder.inDuration.setText(flightList.get(position).getAirlineName());
-        holder.totalAmount.setText(String.format(locale, "%.2f", flightList.get(position).getTotalAmount()));
+        String[] outStr = flightList.get(position).getOutboundFlightsDuration().split(":");
+        holder.outDuration.setText(outStr[0] + "h " + outStr[1] + "m");
+        String[] inStr = flightList.get(position).getOutboundFlightsDuration().split(":");
+        holder.inDuration.setText(inStr[0] + "h " + inStr[1] + "m");
+        holder.totalAmount.setText(String.format(locale, "$%.0f", flightList.get(position).getTotalAmount()));
     }
 
     @Override
@@ -72,7 +73,7 @@ public class SearchResultRecyclerViewAdapter extends RecyclerView.Adapter<Search
         return flightList.size();
     }
 
-    public void refresh(List<Flight> flightList) {
+    void refresh(List<Flight> flightList) {
         Log.d("TAG", "Refresh dashboard " + flightList);
         this.flightList = flightList;
         notifyDataSetChanged();

@@ -6,7 +6,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:background="@color/white"
         android:padding="16dp">
 
@@ -14,87 +14,121 @@
             android:id="@+id/iv_airline_logo"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:layout_marginStart="8dp"
             android:layout_gravity="bottom|start"
             android:contentDescription=""
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tv_airline_name"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@mipmap/ic_launcher" />
 
         <TextView
-            android:id="@+id/tv_total_amount"
-            android:layout_width="0dp"
+            android:id="@+id/tv_airline_name"
+            android:layout_width="64dp"
             android:layout_height="match_parent"
-            android:textSize="32sp"
-            android:textStyle="bold"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:gravity="center"
+            android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="$324.6" />
+            app:layout_constraintEnd_toEndOf="@+id/iv_airline_logo"
+            app:layout_constraintStart_toStartOf="@+id/iv_airline_logo"
+            app:layout_constraintTop_toBottomOf="@+id/iv_airline_logo"
+            tools:text="Emirates Airlines" />
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayoutOutbound"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/tv_total_amount"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_airline_name"
+            app:layout_constraintEnd_toStartOf="@+id/constraintLayoutInbound"
             app:layout_constraintStart_toEndOf="@+id/iv_airline_logo"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="@+id/iv_airline_logo">
+
 
             <TextView
-                android:id="@+id/tv_airline_name"
+                android:id="@+id/tv_out_label"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|start"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="@{flight.airlineName}"
-                android:textSize="12sp"
+                android:text="Outbound"
+                android:textSize="10sp"
+                android:gravity="center"
+                app:layout_constraintBottom_toTopOf="@id/tv_outbound_duration"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Emirates Airlines" />
-
-            <TextView
-                android:id="@+id/tv_inbound_duration"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:textSize="18dp"
-                android:gravity="center"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/tv_outbound_duration"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_airline_name"
-                tools:text="Out 33:33" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_outbound_duration"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:singleLine="true"
                 android:textSize="18dp"
-                android:gravity="center"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tv_inbound_duration"
-                app:layout_constraintTop_toBottomOf="@+id/tv_airline_name"
-                tools:text="In 22:22" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_out_label"
+                tools:text="22h 22m" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayoutInbound"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/constraintLayoutOutbound"
+            app:layout_constraintEnd_toStartOf="@+id/tv_total_amount"
+            app:layout_constraintStart_toEndOf="@+id/constraintLayoutOutbound"
+            app:layout_constraintTop_toTopOf="@+id/constraintLayoutOutbound">
+
+            <TextView
+                android:id="@+id/tv_in_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="10sp"
+                android:text="Inbound"
+                app:layout_constraintBottom_toTopOf="@id/tv_inbound_duration"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_inbound_duration"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:singleLine="true"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_in_label"
+                tools:text="33h 33m" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tv_total_amount"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/constraintLayoutInbound"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="$324.6" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <data>
-
-        <import type="android.view.View" />
-
-        <variable
-            name="flight"
-            type="com.sample.nintextest.model.Flight" />
-    </data>
 </layout>
