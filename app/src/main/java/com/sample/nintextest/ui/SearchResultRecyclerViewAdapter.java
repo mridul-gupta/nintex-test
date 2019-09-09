@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -99,6 +100,10 @@ public class SearchResultRecyclerViewAdapter extends RecyclerView.Adapter<Search
             outDuration = mView.findViewById(R.id.tv_outbound_duration);
             inDuration = mView.findViewById(R.id.tv_inbound_duration);
             totalAmount = mView.findViewById(R.id.tv_total_amount);
+
+            mView.setOnClickListener(view -> {
+                Toast.makeText(context, "Checkout not implemented", Toast.LENGTH_SHORT).show();
+            });
         }
     }
 

@@ -88,7 +88,7 @@ public class SearchFragment extends Fragment {
         buttonSearch = getView().findViewById(R.id.bt_search);
         progressBar = getView().findViewById(R.id.progress_circular);
 
-        mViewModel.responseStatus.observe(this, this::consumeResponse);
+        mViewModel.responseStatus.observe(getViewLifecycleOwner(), this::consumeResponse);
 
         editTextFrom.addTextChangedListener(new TextWatcher() {
             @Override
@@ -207,6 +207,12 @@ public class SearchFragment extends Fragment {
         initViewModels(requireActivity()); //Obtain ViewModel for Fragment
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mViewModel.responseStatus.removeObserver(this::consumeResponse);
+    }
+
     private void initViewModels(FragmentActivity activity) {
         final ViewModelFactory factory = ViewModelFactory.getInstance(activity.getApplication());
         mViewModel = ViewModelProviders.of(activity, factory).get(SearchViewModel.class);
@@ -277,7 +283,7 @@ public class SearchFragment extends Fragment {
             case SUCCESS:
                 progressBar.setVisibility(View.GONE);
                 buttonSearch.setEnabled(true);
-                Toast.makeText(requireContext(), "Success fetching API", Toast.LENGTH_SHORT).show();
+                /*Toast.makeText(requireContext(), "Success fetching API", Toast.LENGTH_SHORT).show();*/
                 ((MainActivity)requireActivity()).loadFragment(Utils.FLIGHT_RESULT_SCREEN);
                 break;
 

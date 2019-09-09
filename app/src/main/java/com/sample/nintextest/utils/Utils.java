@@ -7,6 +7,7 @@ public class Utils {
     public static final String BASE_URL = "https://nmflightapi.azurewebsites.net/";
 
     public enum Status {
+        IDLE,
         LOADING,
         SUCCESS,
         ERROR

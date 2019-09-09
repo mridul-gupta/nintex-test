@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
@@ -16,12 +17,26 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.sample.nintextest.R;
 import com.sample.nintextest.ViewModelFactory;
 import com.sample.nintextest.databinding.FragmentResultBinding;
+import com.sample.nintextest.utils.Utils;
 
 public class ResultFragment extends Fragment {
 
-    FragmentActivity fragmentActivity;
-    FragmentResultBinding mDataBinding;
+    private FragmentActivity fragmentActivity;
+    private FragmentResultBinding mDataBinding;
     private SearchViewModel mViewModel;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                mViewModel.responseStatus.setValue(Utils.Status.IDLE);
+                ((MainActivity) fragmentActivity).loadFragment(Utils.FLIGHT_SEARCH_SCREEN);
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+    }
 
     @Override
     public void onAttach(Context context) {

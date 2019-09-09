@@ -22,22 +22,22 @@ public class SearchViewModel extends ViewModel {
     private FlightRepository mRepository;
     public final ObservableList<Flight> mFlightlist;
 
-    public MutableLiveData<Status> responseStatus = new MutableLiveData<>();
+    MutableLiveData<Status> responseStatus = new MutableLiveData<>(IDLE);
 
     public SearchViewModel(Application application) {
         mFlightlist = new ObservableArrayList<>();
         this.mRepository = initRepository();
     }
 
-    public FlightRepository initRepository() {
+    private FlightRepository initRepository() {
         mRepository = FlightRepository.getInstance();
         return mRepository;
     }
 
-    public void getFlights(String departureAirportCode,
-                           String arrivalAirportCode,
-                           String departureDate,
-                           String returnDate) {
+    void getFlights(String departureAirportCode,
+                    String arrivalAirportCode,
+                    String departureDate,
+                    String returnDate) {
 
         responseStatus.setValue(LOADING);
 
@@ -55,7 +55,5 @@ public class SearchViewModel extends ViewModel {
                 responseStatus.setValue(SUCCESS);
             }
         });
-
-
     }
 }
