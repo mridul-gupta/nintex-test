@@ -31,7 +31,6 @@ import com.sample.nintextest.utils.Utils.Status;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 
@@ -179,8 +178,8 @@ public class SearchFragment extends Fragment {
             if (validateFields()) {
                 mViewModel.getFlights(editTextFrom.getText().toString(),
                         editTextTo.getText().toString(),
-                        departureDate.getTime().toString(),
-                        returnDate.getTime().toString());
+                        new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.getDefault()).format(departureDate.getTime()),
+                        new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.getDefault()).format(returnDate.getTime()));
             } else {
                 Log.d(TAG, "Field validation failed.");
             }
