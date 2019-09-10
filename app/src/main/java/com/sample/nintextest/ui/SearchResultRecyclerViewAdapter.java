@@ -3,16 +3,15 @@ package com.sample.nintextest.ui;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sample.nintextest.R;
+import com.sample.nintextest.databinding.SearchResultItemBinding;
 import com.sample.nintextest.model.Flight;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.OkHttp3Downloader;
@@ -35,38 +34,14 @@ public class SearchResultRecyclerViewAdapter extends RecyclerView.Adapter<Search
     @NonNull
     @Override
     public SearchResultViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.search_result_item, parent, false);
-        return new SearchResultViewHolder(view);
+        return new SearchResultViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+                R.layout.search_result_item, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull SearchResultViewHolder holder, int position) {
-        Locale locale = context.getResources().getConfiguration().getLocales().get(0);
-
-        Picasso.Builder builder = new Picasso.Builder(context);
-        Picasso.get().setLoggingEnabled(true);
-        Picasso.get().setIndicatorsEnabled(true);
-        builder.downloader(new OkHttp3Downloader(context));
-        builder.build().load(flightList.get(position).getAirlineLogoAddress())
-                .error(R.drawable.ic_launcher_background)
-                .into(holder.airlineLogo, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
-                        Log.e(TAG, "Error fetching image " + position);
-                    }
-                });
-
-        holder.airlineName.setText(flightList.get(position).getAirlineName());
-        String[] outStr = flightList.get(position).getOutboundFlightsDuration().split(":");
-        holder.outDuration.setText(outStr[0] + "h " + outStr[1] + "m");
-        String[] inStr = flightList.get(position).getInboundFlightsDuration().split(":");
-        holder.inDuration.setText(inStr[0] + "h " + inStr[1] + "m");
-        holder.totalAmount.setText(String.format(locale, "$%.0f", flightList.get(position).getTotalAmount()));
+        final Flight flight = flightList.get(position);
+        holder.bind(flight);
     }
 
     @Override
@@ -82,27 +57,50 @@ public class SearchResultRecyclerViewAdapter extends RecyclerView.Adapter<Search
 
     class SearchResultViewHolder extends RecyclerView.ViewHolder {
 
-        final View mView;
+        final SearchResultItemBinding mViewBinding;
+        Flight mFlight;
 
-        final ImageView airlineLogo;
-        final TextView airlineName;
-        final TextView outDuration;
-        final TextView inDuration;
-        final TextView totalAmount;
 
-        SearchResultViewHolder(View itemView) {
-            super(itemView);
+        SearchResultViewHolder(SearchResultItemBinding viewBinding) {
+            super(viewBinding.getRoot());
+            mViewBinding = viewBinding;
+            viewBinding.getRoot().setOnClickListener(view -> Toast.makeText(context, "Checkout not implemented", Toast.LENGTH_SHORT).show());
+        }
 
-            mView = itemView;
+        void bind(Flight flight) {
+            mFlight = flight;
+            final SearchResultItemBinding viewBinding = mViewBinding;
+            updateUi();
+            viewBinding.executePendingBindings();
+        }
 
-            airlineLogo = mView.findViewById(R.id.iv_airline_logo);
-            airlineName = mView.findViewById(R.id.tv_airline_name);
-            outDuration = mView.findViewById(R.id.tv_outbound_duration);
-            inDuration = mView.findViewById(R.id.tv_inbound_duration);
-            totalAmount = mView.findViewById(R.id.tv_total_amount);
+        private void updateUi() {
 
-            mView.setOnClickListener(view -> Toast.makeText(context, "Checkout not implemented", Toast.LENGTH_SHORT).show());
+            Locale locale = context.getResources().getConfiguration().getLocales().get(0);
+
+            Picasso.Builder builder = new Picasso.Builder(context);
+            Picasso.get().setLoggingEnabled(true);
+            Picasso.get().setIndicatorsEnabled(true);
+            builder.downloader(new OkHttp3Downloader(context));
+            builder.build().load(mFlight.getAirlineLogoAddress())
+                    .error(R.drawable.ic_launcher_background)
+                    .into(mViewBinding.ivAirlineLogo, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            Log.e(TAG, "Error fetching image " + mFlight);
+                        }
+                    });
+
+            mViewBinding.tvAirlineName.setText(mFlight.getAirlineName());
+            String[] outStr = mFlight.getOutboundFlightsDuration().split(":");
+            mViewBinding.tvOutboundDuration.setText(outStr[0] + "h " + outStr[1] + "m");
+            String[] inStr = mFlight.getInboundFlightsDuration().split(":");
+            mViewBinding.tvInboundDuration.setText(inStr[0] + "h " + inStr[1] + "m");
+            mViewBinding.tvTotalAmount.setText(String.format(locale, "$%.0f", mFlight.getTotalAmount()));
         }
     }
-
 }
