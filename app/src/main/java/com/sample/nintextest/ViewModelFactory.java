@@ -14,7 +14,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     private final Application mApplication;
     private static volatile ViewModelFactory INSTANCE;
 
-    public ViewModelFactory(Application application) {
+    private ViewModelFactory(Application application) {
         this.mApplication = application;
     }
 

@@ -67,7 +67,7 @@ public class SearchFragment extends Fragment {
     private int returnYear;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mDataBinding = FragmentSearchBinding.inflate(inflater, container, false);
         return mDataBinding.getRoot();
@@ -205,7 +205,7 @@ public class SearchFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         initViewModels(requireActivity()); //Obtain ViewModel for Fragment
     }

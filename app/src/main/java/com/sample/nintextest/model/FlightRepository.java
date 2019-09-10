@@ -56,7 +56,7 @@ public class FlightRepository {
             }
 
             @Override
-            public void onFailure(Call<List<Flight>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<Flight>> call, @NonNull Throwable t) {
                 apiCallback.onFailure();
             }
         });
