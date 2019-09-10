@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">Nintex Test</string>
+    <string name="inbound">Inbound</string>
+    <string name="outbound">Outbound</string>
+    <string name="from">From</string>
+    <string name="source">SOURCE</string>
+    <string name="default_from">MEL</string>
+    <string name="to">To</string>
+    <string name="destination">DESTINATION</string>
+    <string name="default_to">SYD</string>
+    <string name="departure_label">Departure</string>
+    <string name="return_label">Return</string>
+    <string name="search">Search</string>
+    <string name="airline_logo">Airline Logo</string>
+    <string name="invalid_from">Enter valid \'From\' City</string>
+    <string name="invalid_to">Enter valid \'To\' City</string>
+    <string name="error_fetching">Error fetching flights. Please check network connection.</string>
+    <string name="not_implemented">Checkout not implemented</string>
+    <string name="time_format">%1$sh %2$sm</string>
+    <string name="month_year_format">%1$s %2$d</string>
 </resources>

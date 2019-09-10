@@ -225,11 +225,15 @@ public class SearchFragment extends Fragment {
         Locale locale = getResources().getConfiguration().getLocales().get(0);
 
         textDayDeparture.setText(String.format(locale, "%02d", departureDay));
-        textMonthYearDeparture.setText(new SimpleDateFormat("MMM", locale).format(departureDate) + " " + departureYear);
+        textMonthYearDeparture.setText(String.format(getString(R.string.month_year_format),
+                new SimpleDateFormat("MMM", locale).format(departureDate),
+                departureYear));
         textDayNameDeparture.setText(new SimpleDateFormat("EEEE", locale).format(departureDate));
 
         textDayReturn.setText(String.format(locale, "%02d", returnDay));
-        textMonthYearReturn.setText(new SimpleDateFormat("MMM", locale).format(returnDate) + " " + returnYear);
+        textMonthYearReturn.setText(String.format(getString(R.string.month_year_format),
+                new SimpleDateFormat("MMM", locale).format(returnDate),
+                returnYear));
         textDayNameReturn.setText(new SimpleDateFormat("EEEE", locale).format(returnDate));
     }
 
@@ -257,10 +261,10 @@ public class SearchFragment extends Fragment {
         customErrorDrawable.setBounds(0, 0, customErrorDrawable.getIntrinsicWidth(), customErrorDrawable.getIntrinsicHeight());
 
         if (!isValidFrom) {
-            editTextFrom.setError("Enter valid 'From' City", customErrorDrawable);
+            editTextFrom.setError(getString(R.string.invalid_from), customErrorDrawable);
         }
         if (!isValidTo) {
-            editTextTo.setError("Enter valid 'To' City", customErrorDrawable);
+            editTextTo.setError(getString(R.string.invalid_to), customErrorDrawable);
         }
         return isValidFrom && isValidTo && isValidDeparture && isValidReturn;
     }
@@ -293,7 +297,7 @@ public class SearchFragment extends Fragment {
             case ERROR:
                 progressBar.setVisibility(View.GONE);
                 buttonSearch.setEnabled(true);
-                Toast.makeText(requireContext(), "Error fetching API", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), R.string.error_fetching, Toast.LENGTH_SHORT).show();
                 break;
 
             default:

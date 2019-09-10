@@ -50,7 +50,7 @@ public class SearchResultRecyclerViewAdapter extends RecyclerView.Adapter<Search
     }
 
     void refresh(List<Flight> flightList) {
-        Log.d("TAG", "Refresh dashboard " + flightList);
+        /*Log.d("TAG", "Refresh dashboard " + flightList);*/
         this.flightList = flightList;
         notifyDataSetChanged();
     }
@@ -64,14 +64,13 @@ public class SearchResultRecyclerViewAdapter extends RecyclerView.Adapter<Search
         SearchResultViewHolder(SearchResultItemBinding viewBinding) {
             super(viewBinding.getRoot());
             mViewBinding = viewBinding;
-            viewBinding.getRoot().setOnClickListener(view -> Toast.makeText(context, "Checkout not implemented", Toast.LENGTH_SHORT).show());
+            viewBinding.getRoot().setOnClickListener(view -> Toast.makeText(context, R.string.not_implemented, Toast.LENGTH_SHORT).show());
         }
 
         void bind(Flight flight) {
             mFlight = flight;
-            final SearchResultItemBinding viewBinding = mViewBinding;
             updateUi();
-            viewBinding.executePendingBindings();
+            mViewBinding.executePendingBindings();
         }
 
         private void updateUi() {
@@ -97,9 +96,9 @@ public class SearchResultRecyclerViewAdapter extends RecyclerView.Adapter<Search
 
             mViewBinding.tvAirlineName.setText(mFlight.getAirlineName());
             String[] outStr = mFlight.getOutboundFlightsDuration().split(":");
-            mViewBinding.tvOutboundDuration.setText(outStr[0] + "h " + outStr[1] + "m");
+            mViewBinding.tvOutboundDuration.setText(String.format(context.getString(R.string.time_format), outStr[0], outStr[1]));
             String[] inStr = mFlight.getInboundFlightsDuration().split(":");
-            mViewBinding.tvInboundDuration.setText(inStr[0] + "h " + inStr[1] + "m");
+            mViewBinding.tvInboundDuration.setText(String.format(context.getString(R.string.time_format), inStr[0], inStr[1]));
             mViewBinding.tvTotalAmount.setText(String.format(locale, "$%.0f", mFlight.getTotalAmount()));
         }
     }
