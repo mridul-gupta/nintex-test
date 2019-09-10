@@ -22,6 +22,7 @@ import com.sample.nintextest.utils.Utils;
 public class ResultFragment extends Fragment {
 
     private FragmentActivity fragmentActivity;
+    private FragmentResultBinding mDataBinding;
     private SearchViewModel mViewModel;
 
     @Override
@@ -38,7 +39,7 @@ public class ResultFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         fragmentActivity = (FragmentActivity) context;
         initViewModels(fragmentActivity); //Obtain ViewModel for Fragment
@@ -49,7 +50,7 @@ public class ResultFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         inflater.inflate(R.layout.fragment_result, container, false);
 
-        FragmentResultBinding mDataBinding = FragmentResultBinding.inflate(inflater, container, false);
+        mDataBinding = FragmentResultBinding.inflate(inflater, container, false);
         mDataBinding.setViewmodel(mViewModel);
 
         final RecyclerView recyclerView = mDataBinding.rvFlights;
