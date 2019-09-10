@@ -56,15 +56,9 @@ public class SearchFragment extends Fragment {
     private DatePickerDialog.OnDateSetListener mOnDepartureDateSetListener;
     private DatePickerDialog.OnDateSetListener mOnReturnDateSetListener;
 
-    private Date departureDate;
-    private int departureDay;
-    private int departureMonth;
-    private int departureYear;
+    private Calendar departureDate;
 
-    private Date returnDate;
-    private int returnDay;
-    private int returnMonth;
-    private int returnYear;
+    private Calendar returnDate;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -137,28 +131,27 @@ public class SearchFragment extends Fragment {
             }
         });
 
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        departureDate = Calendar.getInstance();
+        departureDate.set(Calendar.HOUR_OF_DAY, 0);
+        departureDate.set(Calendar.MINUTE, 0);
+        departureDate.set(Calendar.SECOND, 0);
+        departureDate.set(Calendar.MILLISECOND, 0);
 
-        departureDay = day;
-        departureMonth = month;
-        departureYear = year;
-        departureDate = new Date(departureYear, departureMonth, departureDay);
+        returnDate = Calendar.getInstance();
+        returnDate.add(Calendar.DAY_OF_MONTH, 1); /* next day */
+        returnDate.set(Calendar.HOUR_OF_DAY, 0);
+        returnDate.set(Calendar.MINUTE, 0);
+        returnDate.set(Calendar.SECOND, 0);
+        returnDate.set(Calendar.MILLISECOND, 0);
 
-        returnDay = day + 1;
-        returnMonth = month;
-        returnYear = year;
-        returnDate = new Date(returnYear, returnMonth, returnDay);
 
         layoutDepartureDate.setOnClickListener(v -> {
             DatePickerDialog mDatePickerDialog = new DatePickerDialog(
                     requireActivity(),
                     mOnDepartureDateSetListener,
-                    departureYear,
-                    departureMonth,
-                    departureDay);
+                    departureDate.get(Calendar.YEAR),
+                    departureDate.get(Calendar.MONTH),
+                    departureDate.get(Calendar.DAY_OF_MONTH));
             mDatePickerDialog.show();
         });
 
@@ -166,27 +159,19 @@ public class SearchFragment extends Fragment {
             DatePickerDialog mDatePickerDialog = new DatePickerDialog(
                     requireActivity(),
                     mOnReturnDateSetListener,
-                    returnYear,
-                    returnMonth,
-                    returnDay);
+                    returnDate.get(Calendar.YEAR),
+                    returnDate.get(Calendar.MONTH),
+                    returnDate.get(Calendar.DAY_OF_MONTH));
             mDatePickerDialog.show();
         });
 
-        mOnDepartureDateSetListener = (datePicker, year12, month12, day12) -> {
-            departureDay = day12;
-            departureMonth = month12;
-            departureYear = year12;
-            departureDate = new Date(departureYear, departureMonth, departureDay);
-
+        mOnDepartureDateSetListener = (datePicker, year, month, day) -> {
+            departureDate.set(year, month, day);
             updateUi();
         };
 
-        mOnReturnDateSetListener = (datePicker, year1, month1, day1) -> {
-            returnDay = day1;
-            returnMonth = month1;
-            returnYear = year1;
-            returnDate = new Date(returnYear, returnMonth, returnDay);
-
+        mOnReturnDateSetListener = (datePicker, year, month, day) -> {
+            returnDate.set(year, month, day);
             updateUi();
         };
 
@@ -194,8 +179,8 @@ public class SearchFragment extends Fragment {
             if (validateFields()) {
                 mViewModel.getFlights(editTextFrom.getText().toString(),
                         editTextTo.getText().toString(),
-                        departureDate.toString(),
-                        returnDate.toString());
+                        departureDate.getTime().toString(),
+                        returnDate.getTime().toString());
             } else {
                 Log.d(TAG, "Field validation failed.");
             }
@@ -222,19 +207,19 @@ public class SearchFragment extends Fragment {
     }
 
     private void updateUi() {
-        Locale locale = getResources().getConfiguration().getLocales().get(0);
+        Locale locale = Locale.getDefault();
 
-        textDayDeparture.setText(String.format(locale, "%02d", departureDay));
+        textDayDeparture.setText(String.format(locale, "%02d", departureDate.get(Calendar.DAY_OF_MONTH)));
         textMonthYearDeparture.setText(String.format(getString(R.string.month_year_format),
-                new SimpleDateFormat("MMM", locale).format(departureDate),
-                departureYear));
-        textDayNameDeparture.setText(new SimpleDateFormat("EEEE", locale).format(departureDate));
+                new SimpleDateFormat("MMM", locale).format(departureDate.getTime()),
+                departureDate.get(Calendar.YEAR)));
+        textDayNameDeparture.setText(new SimpleDateFormat("EEEE", locale).format(departureDate.getTime()));
 
-        textDayReturn.setText(String.format(locale, "%02d", returnDay));
+        textDayReturn.setText(String.format(locale, "%02d", returnDate.get(Calendar.DAY_OF_MONTH)));
         textMonthYearReturn.setText(String.format(getString(R.string.month_year_format),
-                new SimpleDateFormat("MMM", locale).format(returnDate),
-                returnYear));
-        textDayNameReturn.setText(new SimpleDateFormat("EEEE", locale).format(returnDate));
+                new SimpleDateFormat("MMM", locale).format(returnDate.getTime()),
+                returnDate.get(Calendar.YEAR)));
+        textDayNameReturn.setText(new SimpleDateFormat("EEEE", locale).format(returnDate.getTime()));
     }
 
     private boolean validateFields() {
@@ -252,7 +237,11 @@ public class SearchFragment extends Fragment {
                         editTextTo.length() == 3 &&
                         isAlphaNumeric(editTextTo.getText().toString());
 
-        Date today = Calendar.getInstance().getTime();
+        Calendar today = Calendar.getInstance();
+        today.set(Calendar.HOUR_OF_DAY, 0);
+        today.set(Calendar.MINUTE, 0);
+        today.set(Calendar.SECOND, 0);
+        today.set(Calendar.MILLISECOND, 0);
 
         isValidDeparture = !departureDate.before(today);
         isValidReturn = returnDate.after(departureDate);
@@ -265,6 +254,12 @@ public class SearchFragment extends Fragment {
         }
         if (!isValidTo) {
             editTextTo.setError(getString(R.string.invalid_to), customErrorDrawable);
+        }
+        if (!isValidDeparture) {
+            Toast.makeText(requireContext(), "Invalid departure date", Toast.LENGTH_SHORT).show();
+        }
+        if (!isValidReturn) {
+            Toast.makeText(requireContext(), "Invalid return date", Toast.LENGTH_SHORT).show();
         }
         return isValidFrom && isValidTo && isValidDeparture && isValidReturn;
     }
