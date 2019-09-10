@@ -6,8 +6,8 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.sample.nintextest.network.ApiCallback;
-import com.sample.nintextest.network.ApiClient;
 import com.sample.nintextest.network.ApiInterface;
+import com.sample.nintextest.network.RemoteDataSource;
 
 import java.util.List;
 
@@ -19,9 +19,6 @@ public class FlightRepository {
 
     private volatile static FlightRepository INSTANCE = null;
 
-    public FlightRepository() {
-        //this.apiInterface = apiCallInterface;
-    }
 
     public static FlightRepository getInstance() {
         if (INSTANCE == null) {
@@ -43,8 +40,9 @@ public class FlightRepository {
                                   String returnDate,
                                   ApiCallback<List<Flight>> apiCallback) {
 
+        ApiInterface apiInterface = RemoteDataSource.getApiInterface();
 
-        Call<List<Flight>> call = ApiClient.getClient().create(ApiInterface.class).getAvailableFlights(departureAirportCode, arrivalAirportCode, departureDate, returnDate);
+        Call<List<Flight>> call = apiInterface.getAvailableFlights(departureAirportCode, arrivalAirportCode, departureDate, returnDate);
         call.enqueue(new Callback<List<Flight>>() {
 
             @Override

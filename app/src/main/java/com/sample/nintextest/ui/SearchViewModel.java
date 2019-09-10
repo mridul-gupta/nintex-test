@@ -1,7 +1,5 @@
 package com.sample.nintextest.ui;
 
-import android.app.Application;
-
 import androidx.databinding.ObservableArrayList;
 import androidx.databinding.ObservableList;
 import androidx.lifecycle.MutableLiveData;
@@ -20,12 +18,12 @@ public class SearchViewModel extends ViewModel {
 
 
     private FlightRepository mRepository;
-    public final ObservableList<Flight> mFlightlist;
+    public final ObservableList<Flight> mFlightList;
 
-    MutableLiveData<Status> responseStatus = new MutableLiveData<>(IDLE);
+    final MutableLiveData<Status> responseStatus = new MutableLiveData<>(IDLE);
 
-    public SearchViewModel(Application application) {
-        mFlightlist = new ObservableArrayList<>();
+    public SearchViewModel() {
+        mFlightList = new ObservableArrayList<>();
         this.mRepository = initRepository();
     }
 
@@ -50,8 +48,8 @@ public class SearchViewModel extends ViewModel {
 
             @Override
             public void onSuccess(List<Flight> flights) {
-                mFlightlist.clear();
-                mFlightlist.addAll(flights);
+                mFlightList.clear();
+                mFlightList.addAll(flights);
                 responseStatus.setValue(SUCCESS);
             }
         });

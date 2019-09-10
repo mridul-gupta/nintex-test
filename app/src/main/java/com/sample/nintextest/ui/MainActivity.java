@@ -19,23 +19,23 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        replaceFragment(new SearchFragment(), R.id.fragment_container);
+        replaceFragment(new SearchFragment());
     }
 
-    private void replaceFragment(Fragment fragment, int frameId) {
+    private void replaceFragment(Fragment fragment) {
         final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(frameId, fragment);
+        transaction.replace(R.id.fragment_container, fragment);
         transaction.commitAllowingStateLoss();
     }
 
     public void loadFragment(int fragmentId) {
         switch (fragmentId) {
             case Utils.FLIGHT_SEARCH_SCREEN:
-                replaceFragment(new SearchFragment(), R.id.fragment_container);
+                replaceFragment(new SearchFragment());
                 break;
 
             case Utils.FLIGHT_RESULT_SCREEN:
-                replaceFragment(new ResultFragment(), R.id.fragment_container);
+                replaceFragment(new ResultFragment());
                 break;
 
             default:

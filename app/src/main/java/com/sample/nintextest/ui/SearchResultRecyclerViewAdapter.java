@@ -25,9 +25,9 @@ public class SearchResultRecyclerViewAdapter extends RecyclerView.Adapter<Search
     private final String TAG = SearchFragment.class.getSimpleName();
 
     private List<Flight> flightList;
-    private Context context;
+    private final Context context;
 
-    public SearchResultRecyclerViewAdapter(Context context, List<Flight> flightList) {
+    SearchResultRecyclerViewAdapter(Context context, List<Flight> flightList) {
         this.context = context;
         this.flightList = flightList;
     }
@@ -64,7 +64,7 @@ public class SearchResultRecyclerViewAdapter extends RecyclerView.Adapter<Search
         holder.airlineName.setText(flightList.get(position).getAirlineName());
         String[] outStr = flightList.get(position).getOutboundFlightsDuration().split(":");
         holder.outDuration.setText(outStr[0] + "h " + outStr[1] + "m");
-        String[] inStr = flightList.get(position).getOutboundFlightsDuration().split(":");
+        String[] inStr = flightList.get(position).getInboundFlightsDuration().split(":");
         holder.inDuration.setText(inStr[0] + "h " + inStr[1] + "m");
         holder.totalAmount.setText(String.format(locale, "$%.0f", flightList.get(position).getTotalAmount()));
     }
@@ -84,11 +84,11 @@ public class SearchResultRecyclerViewAdapter extends RecyclerView.Adapter<Search
 
         final View mView;
 
-        ImageView airlineLogo;
-        TextView airlineName;
-        TextView outDuration;
-        TextView inDuration;
-        TextView totalAmount;
+        final ImageView airlineLogo;
+        final TextView airlineName;
+        final TextView outDuration;
+        final TextView inDuration;
+        final TextView totalAmount;
 
         SearchResultViewHolder(View itemView) {
             super(itemView);
@@ -101,9 +101,7 @@ public class SearchResultRecyclerViewAdapter extends RecyclerView.Adapter<Search
             inDuration = mView.findViewById(R.id.tv_inbound_duration);
             totalAmount = mView.findViewById(R.id.tv_total_amount);
 
-            mView.setOnClickListener(view -> {
-                Toast.makeText(context, "Checkout not implemented", Toast.LENGTH_SHORT).show();
-            });
+            mView.setOnClickListener(view -> Toast.makeText(context, "Checkout not implemented", Toast.LENGTH_SHORT).show());
         }
     }
 

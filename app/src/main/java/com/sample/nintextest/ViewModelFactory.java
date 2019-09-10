@@ -36,7 +36,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @SuppressWarnings("unchecked")
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(SearchViewModel.class)) {
-            return (T) new SearchViewModel(mApplication);
+            return (T) new SearchViewModel();
         }
         throw new IllegalArgumentException("Unknown class name");
     }

@@ -25,6 +25,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.sample.nintextest.R;
 import com.sample.nintextest.ViewModelFactory;
+import com.sample.nintextest.databinding.FragmentSearchBinding;
 import com.sample.nintextest.utils.Utils;
 import com.sample.nintextest.utils.Utils.Status;
 
@@ -37,6 +38,7 @@ import java.util.Locale;
 public class SearchFragment extends Fragment {
     private final String TAG = SearchFragment.class.getSimpleName();
     private SearchViewModel mViewModel;
+    private FragmentSearchBinding mDataBinding;
 
     private EditText editTextFrom;
     private EditText editTextTo;
@@ -67,26 +69,27 @@ public class SearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search, container, false);
+        mDataBinding = FragmentSearchBinding.inflate(inflater, container, false);
+        return mDataBinding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        editTextFrom = getView().findViewById(R.id.editTextFrom);
-        editTextTo = getView().findViewById(R.id.editTextTo);
-        layoutDepartureDate = getView().findViewById(R.id.cl_departureDate);
-        layoutReturnDate = getView().findViewById(R.id.cl_returnDate);
-        textDayDeparture = getView().findViewById(R.id.tv_dayDeparture);
-        textMonthYearDeparture = getView().findViewById(R.id.tv_monthYearDeparture);
-        textDayNameDeparture = getView().findViewById(R.id.tv_dayNameDeparture);
-        textDayReturn = getView().findViewById(R.id.tv_dayReturn);
-        textMonthYearReturn = getView().findViewById(R.id.tv_monthYearReturn);
-        textDayNameReturn = getView().findViewById(R.id.tv_dayNameReturn);
-        buttonSearch = getView().findViewById(R.id.bt_search);
-        progressBar = getView().findViewById(R.id.progress_circular);
+
+        editTextFrom = mDataBinding.editTextFrom;
+        editTextTo = mDataBinding.editTextTo;
+        layoutDepartureDate = mDataBinding.clDepartureDate;
+        layoutReturnDate = mDataBinding.clReturnDate;
+        textDayDeparture = mDataBinding.tvDayDeparture;
+        textMonthYearDeparture = mDataBinding.tvMonthYearDeparture;
+        textDayNameDeparture = mDataBinding.tvDayNameDeparture;
+        textDayReturn = mDataBinding.tvDayReturn;
+        textMonthYearReturn = mDataBinding.tvMonthYearReturn;
+        textDayNameReturn = mDataBinding.tvDayNameReturn;
+        buttonSearch = mDataBinding.btSearch;
+        progressBar = mDataBinding.progressCircular;
 
         mViewModel.responseStatus.observe(getViewLifecycleOwner(), this::consumeResponse);
 
