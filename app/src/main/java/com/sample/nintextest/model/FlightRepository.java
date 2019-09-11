@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import com.sample.nintextest.network.ApiCallback;
 import com.sample.nintextest.network.ApiInterface;
 import com.sample.nintextest.network.RemoteDataSource;
+import com.sample.nintextest.test.EspressoIdlingResource;
 
 import java.util.List;
 
@@ -42,6 +43,9 @@ public class FlightRepository {
 
         ApiInterface apiInterface = RemoteDataSource.getApiInterface();
 
+        /* Espresso testing */
+        EspressoIdlingResource.setIdleState(false);
+
         Call<List<Flight>> call = apiInterface.getAvailableFlights(departureAirportCode, arrivalAirportCode, departureDate, returnDate);
         call.enqueue(new Callback<List<Flight>>() {
 
@@ -53,11 +57,17 @@ public class FlightRepository {
                     else
                         Log.e("executeGetFlights: ", "success : Network callback null");
                 }
+
+                /* Espresso testing */
+                EspressoIdlingResource.setIdleState(true);
             }
 
             @Override
             public void onFailure(@NonNull Call<List<Flight>> call, @NonNull Throwable t) {
                 apiCallback.onFailure();
+
+                /* Espresso testing */
+                EspressoIdlingResource.setIdleState(true);
             }
         });
     }
