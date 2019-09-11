@@ -32,6 +32,7 @@ import java.util.Locale;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.core.internal.deps.guava.base.Preconditions.checkNotNull;
 import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
@@ -113,7 +114,9 @@ public class GetFlightsInstrumentedTest {
     }
 
     @Test
-    public void getFlights() {
+    public void getFlightsTestResults() {
+        onView(withId(R.id.edit_text_from)).perform(replaceText("DEL"));
+        onView(withId(R.id.edit_text_to)).perform(replaceText("MUM"));
         onView(withId(R.id.bt_search)).perform(click());
 
         try {
