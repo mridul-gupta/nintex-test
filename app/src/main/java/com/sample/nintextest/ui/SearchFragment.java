@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
@@ -62,6 +63,9 @@ public class SearchFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mDataBinding = FragmentSearchBinding.inflate(inflater, container, false);
+        final Toolbar toolbar = mDataBinding.getRoot().findViewById(R.id.toolbar);
+        ((TextView)toolbar.findViewById(R.id.toolbar_title)).setText(R.string.search_title);
+
         return mDataBinding.getRoot();
     }
 

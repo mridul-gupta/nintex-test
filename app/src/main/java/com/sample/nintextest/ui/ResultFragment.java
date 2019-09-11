@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.activity.OnBackPressedCallback;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
@@ -31,8 +33,7 @@ public class ResultFragment extends Fragment {
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-                mViewModel.responseStatus.setValue(Utils.Status.IDLE);
-                ((MainActivity) fragmentActivity).loadFragment(Utils.FLIGHT_SEARCH_SCREEN);
+                onBackPressed();
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
@@ -53,6 +54,11 @@ public class ResultFragment extends Fragment {
         mDataBinding = FragmentResultBinding.inflate(inflater, container, false);
         mDataBinding.setViewmodel(mViewModel);
 
+        final Toolbar toolbar = mDataBinding.getRoot().findViewById(R.id.toolbar);
+        ((TextView)toolbar.findViewById(R.id.toolbar_title)).setText(String.format(getString(R.string.result_title), mViewModel.fromCity, mViewModel.toCity));
+        toolbar.setNavigationIcon(R.drawable.ic_back);
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+
         final RecyclerView recyclerView = mDataBinding.rvFlights;
 
         SearchResultRecyclerViewAdapter adapter = new SearchResultRecyclerViewAdapter(requireContext(), mViewModel.mFlightList);
@@ -71,5 +77,10 @@ public class ResultFragment extends Fragment {
     private void initViewModels(FragmentActivity activity) {
         final ViewModelFactory factory = ViewModelFactory.getInstance(activity.getApplication());
         mViewModel = ViewModelProviders.of(activity, factory).get(SearchViewModel.class);
+    }
+
+    private void onBackPressed() {
+        mViewModel.responseStatus.setValue(Utils.Status.IDLE);
+        ((MainActivity) fragmentActivity).loadFragment(Utils.FLIGHT_SEARCH_SCREEN);
     }
 }
