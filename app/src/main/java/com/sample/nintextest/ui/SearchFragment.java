@@ -278,7 +278,11 @@ public class SearchFragment extends Fragment {
                 progressBar.setVisibility(View.GONE);
                 buttonSearch.setEnabled(true);
                 /*Toast.makeText(requireContext(), "Success fetching API", Toast.LENGTH_SHORT).show();*/
-                ((MainActivity)requireActivity()).loadFragment(Utils.FLIGHT_RESULT_SCREEN);
+                if (mViewModel.mFlightList.size() > 0) {
+                    ((MainActivity) requireActivity()).loadFragment(Utils.FLIGHT_RESULT_SCREEN);
+                } else {
+                    Toast.makeText(requireContext(), "No flights found. Please try other dates.", Toast.LENGTH_SHORT).show();
+                }
                 break;
 
             case ERROR:
