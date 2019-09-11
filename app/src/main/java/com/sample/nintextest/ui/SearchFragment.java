@@ -56,7 +56,6 @@ public class SearchFragment extends Fragment {
     private DatePickerDialog.OnDateSetListener mOnReturnDateSetListener;
 
     private Calendar departureDate;
-
     private Calendar returnDate;
 
     @Override
@@ -86,6 +85,12 @@ public class SearchFragment extends Fragment {
 
         mViewModel.responseStatus.observe(getViewLifecycleOwner(), this::consumeResponse);
 
+        /* init UI fields */
+        editTextFrom.setText(mViewModel.fromCity);
+        editTextTo.setText(mViewModel.toCity);
+        departureDate = mViewModel.departureDate;
+        returnDate = mViewModel.returnDate;
+
         editTextFrom.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -105,6 +110,7 @@ public class SearchFragment extends Fragment {
                     editTextFrom.setText(s);
                     editTextFrom.setSelection(s.length());
                 }
+                mViewModel.fromCity = editTextFrom.getText().toString();
             }
         });
 
@@ -127,22 +133,9 @@ public class SearchFragment extends Fragment {
                     editTextTo.setText(s);
                     editTextTo.setSelection(s.length());
                 }
+                mViewModel.toCity = editTextTo.getText().toString();
             }
         });
-
-        departureDate = Calendar.getInstance();
-        departureDate.set(Calendar.HOUR_OF_DAY, 0);
-        departureDate.set(Calendar.MINUTE, 0);
-        departureDate.set(Calendar.SECOND, 0);
-        departureDate.set(Calendar.MILLISECOND, 0);
-
-        returnDate = Calendar.getInstance();
-        returnDate.add(Calendar.DAY_OF_MONTH, 1); /* next day */
-        returnDate.set(Calendar.HOUR_OF_DAY, 0);
-        returnDate.set(Calendar.MINUTE, 0);
-        returnDate.set(Calendar.SECOND, 0);
-        returnDate.set(Calendar.MILLISECOND, 0);
-
 
         layoutDepartureDate.setOnClickListener(v -> {
             DatePickerDialog mDatePickerDialog = new DatePickerDialog(
